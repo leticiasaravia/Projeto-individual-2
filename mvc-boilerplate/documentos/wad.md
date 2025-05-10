@@ -68,46 +68,49 @@ Testável: É possível testar verificando se as tarefas aparecem ordenadas conf
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.*
 
 Modelo relacional
-alunos
-id (PK)
+ ```sql
+--  -- Tabela de Alunos
+CREATE TABLE alunos (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR NOT NULL,
+  email VARCHAR NOT NULL UNIQUE,
+  senha VARCHAR NOT NULL
+);
 
-nome
+-- Tabela de Categorias
+CREATE TABLE categorias (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR NOT NULL
+);
 
-email
+-- Tabela de Prioridade
+CREATE TABLE prioridade (
+  id SERIAL PRIMARY KEY,
+  prioridade VARCHAR NOT NULL
+);
 
-senha
+-- Tabela de Status
+CREATE TABLE status (
+  id SERIAL PRIMARY KEY,
+  status VARCHAR NOT NULL
+);
 
-📂 categorias
-id (PK)
+-- Tabela de Tarefas
+CREATE TABLE tasks (
+  id SERIAL PRIMARY KEY,
+  aluno_id INT REFERENCES alunos(id) ON DELETE CASCADE,
+  categorias_id INT REFERENCES categorias(id) ON DELETE SET NULL,
+  titulo VARCHAR NOT NULL,
+  descricao VARCHAR,
+  data_inicio VARCHAR,
+  data_fim VARCHAR,
+  prioridade_id INT REFERENCES prioridade(id),
+  status_id INT REFERENCES status(id)
+);
+```````
 
-nome
-
- prioridade
-id (PK)
-prioridade
-
- status
-
-id (PK)
-status
-
-
- tasks
-
-id (PK)
-aluno_id (FK) → alunos(id)
-categorias_id (FK) → categorias(id)
-titulo
-descricao
-data_inicio
-data_fim
-prioridade (FK) → prioridade(id)
-status (FK) → status(id)
-
-*Posicione também o modelo físico com o Schema do BD (arquivo .sql)*
 
 ![DER](../assets/der.png)
 
@@ -165,6 +168,3 @@ status (FK) → status(id)
 ## <a name="c5"></a>5. Referências
 
 _Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
-
----
----
