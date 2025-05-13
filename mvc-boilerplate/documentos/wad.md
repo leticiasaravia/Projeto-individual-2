@@ -130,7 +130,26 @@ CREATE TABLE tasks (
 
 ### 3.3. Wireframes (Semana 03)
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização).*
+![WIREFRAME](wireframe.png)
+
+Wireframe 1 – Visualização semanal e detalhes da tarefa
+Este wireframe mostra uma visualização em formato de calendário semanal, acompanhado de um painel com os detalhes da tarefa selecionada. Nesse painel, o usuário pode visualizar ou preencher informações como: nome da tarefa, horários de início e fim, descrição e prioridade.
+
+Relacionamento com as User Stories:
+
+US02 - "Como usuária que busca produtividade, quero visualizar todas as minhas atividades em um calendário intuitivo..."
+O calendário semanal permite que a usuária veja de forma clara e organizada como suas atividades estão distribuídas ao longo dos dias. Isso facilita a compreensão dos compromissos, contribuindo para uma rotina mais estruturada e produtiva.
+
+US03 - "Como usuária que tem dificuldade em definir prioridades, quero que as tarefas sejam automaticamente classificadas por nível de importância..."
+A presença do campo "Prioridade" no painel de tarefa mostra que há uma funcionalidade voltada à categorização das atividades por importância. Essa informação pode ser usada tanto para exibição quanto para ordenação automática das tarefas, o que atende diretamente à necessidade descrita na user story.
+
+Wireframe 2 – Alerta de fim de tarefa
+Este wireframe apresenta a mesma estrutura do anterior, mas com um modal sobreposto no centro da tela. O modal exibe uma mensagem informando que o tempo da atividade foi concluído, além de sugerir que a usuária inicie uma nova tarefa.
+
+Relacionamento com a User Story:
+
+US01 - "Como estudante de Direito, quero receber lembretes de início, meio e fim de uma atividade..."
+A notificação exibida no modal funciona como um lembrete visual, alertando a usuária de que o tempo para a conclusão da tarefa terminou. Isso demonstra que o sistema está acompanhando o tempo das atividades e notificando a usuária nos momentos apropriados, conforme proposto na user story.
 
 ### 3.4. Guia de estilos (Semana 05)
 
