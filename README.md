@@ -1,56 +1,83 @@
-# Projeto-individual-2
+# Boilerplate MVC em Node.js com PostgreSQL
 
-# Gerenciador de Tarefas Universitário
+Este projeto é um boilerplate básico para uma aplicação Node.js seguindo o padrão MVC (Model-View-Controller), utilizando PostgreSQL como banco de dados.
 
-## Descrição do sistema
+## Requisitos
 
-Este projeto é um gerenciador de tarefas desenvolvido para ajudar estudantes universitários a se organizarem melhor no dia a dia. O sistema permite cadastrar, editar e visualizar tarefas, que podem ser classificadas por categoria, prioridade e status.
+- Node.js (versão X.X.X)
+- PostgreSQL (versão X.X.X)
 
-Foi desenvolvido com Node.js e Express.js, seguindo o padrão de organização MVC (Model - View - Controller).
+## Instalação
 
-## Estrutura do projeto
+1. **Clonar o repositório:**
 
-O projeto está organizado da seguinte forma:
-````meu-projeto/
-├── config/ # Configurações, como a conexão com o banco de dados
-├── controllers/ # Lógica de controle das rotas
-├── models/ # Modelos de dados (estruturas das tabelas)
-├── routes/ # Arquivos de definição das rotas
-├── services/ # Serviços auxiliares
-├── views/ # Arquivos EJS com as páginas do sistema
-├── assets/ # Imagens e fontes
-├── scripts/ # Arquivos JS públicos
-├── styles/ # Arquivos CSS
-├── tests/ # Testes automatizados
-├── .env.example # Exemplo de variáveis de ambiente
-├── .gitignore # Arquivos ignorados pelo Git
-├── jest.config.js # Configuração de testes
-├── package.json # Lista de dependências
-├── server.js # Arquivo principal que inicializa o servidor
-└── readme.md # Documentação do projeto
-````
-Como executar o projeto localmente:
+```bash
+   git clone https://github.com/seu-usuario/seu-projeto.git
+   cd seu-projeto
+```
 
-1. Clone este repositório:
- ````
-   git clone https://github.com/leticiasaravia/projeto-individual-2
-````
-2. Instale as dependências:
-   ```
-   npm install
-   ```
+2. **Instalar as dependências:**
+    
+```bash
+npm install
+```
+    
+3. **Configurar o arquivo `.env`:**
+    
+Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente necessárias, como as configurações do banco de dados PostgreSQL.
+    
 
-3. Configure o banco de dados PostgreSQL:
-   - Crie um banco.
-   - Execute o script `modelo-fisico.sql` para criar as tabelas.
+Configuração do Banco de Dados
+------------------------------
 
-4. Inicie o servidor:
-   ```bash
-   node server.js
-   ```
+1. **Criar banco de dados:**
+    
+    Crie um banco de dados PostgreSQL com o nome especificado no seu arquivo `.env`.
+    
+2. **Executar o script SQL de inicialização:**
+    
+```bash
+npm run init-db
+```
+    
+Isso criará a tabela `users` no seu banco de dados PostgreSQL com UUID como chave primária e inserirá alguns registros de exemplo.
+    
 
-5. Acesse o sistema pelo navegador:
-   ```
-   http://localhost:3000
-   ```
+Funcionalidades
+---------------
 
+* **Padrão MVC:** Estrutura organizada em Model, View e Controller.
+* **PostgreSQL:** Banco de dados relacional utilizado para persistência dos dados.
+* **UUID:** Utilização de UUID como chave primária na tabela `users`.
+* **Scripts com `nodemon`:** Utilização do `nodemon` para reiniciar automaticamente o servidor após alterações no código.
+* **Testes:** Inclui estrutura básica para testes automatizados.
+
+Scripts Disponíveis
+-------------------
+
+* `npm start`: Inicia o servidor Node.js.
+* `npm run dev`: Inicia o servidor com `nodemon`, reiniciando automaticamente após alterações no código.
+* `npm run test`: Executa os testes automatizados.
+* `npm run test:coverage`: Executa os testes e gera um relatório de cobertura de código.
+
+Estrutura de Diretórios
+-----------------------
+
+* **`config/`**: Configurações do banco de dados e outras configurações do projeto.
+* **`controllers/`**: Controladores da aplicação (lógica de negócio).
+* **`models/`**: Modelos da aplicação (definições de dados e interações com o banco de dados).
+* **`routes/`**: Rotas da aplicação.
+* **`tests/`**: Testes automatizados.
+* **`views/`**: Views da aplicação (se aplicável).
+
+Contribuição
+------------
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir um issue ou enviar um pull request.
+
+Licença
+-------
+
+Este projeto está licenciado sob a Licença MIT.
+
+Este README.md fornece uma visão geral clara do boilerplate, incluindo instruções de instalação, configuração do banco de dados, funcionalidades principais, scripts disponíveis, estrutura de diretórios, como contribuir e informações de licença. Certifique-se de personalizar as seções com detalhes específicos do seu projeto conforme necessário.

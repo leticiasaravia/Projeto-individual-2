@@ -1,10 +1,11 @@
+//arquivo: userRoutes.js
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
 /**
  * @swagger
- * /:
+ * /usuarios:
  *   get:
  *     tags: [Usuários]
  *     summary: Retorna todos os usuários
@@ -12,11 +13,11 @@ const userController = require('../controllers/userController');
  *       200:
  *         description: Lista de usuários
  */
-router.get('/', userController.getAllUsers);
+router.get('/',userController.getAllUsers);
 
 /**
  * @swagger
- * /{id}:
+ * /usuarios/{id}:
  *   get:
  *     tags: [Usuários]
  *     summary: Retorna um usuário pelo ID
@@ -37,7 +38,7 @@ router.get('/:id', userController.getUserById);
 
 /**
  * @swagger
- * /:
+ * /usuarios:
  *   post:
  *     tags: [Usuários]
  *     summary: Cria um novo usuário
@@ -58,9 +59,10 @@ router.get('/:id', userController.getUserById);
  */
 router.post('/', userController.createUser);
 
+
 /**
  * @swagger
- * /{id}:
+ * /usuarios/{id}:
  *   put:
  *     summary: Atualiza um usuário existente
  *     tags: [Usuários]
@@ -93,15 +95,14 @@ router.post('/', userController.createUser);
  *       404:
  *         description: Usuário não encontrado
  */
-router.put('/usuarios/:id', userController.updateUser);
+router.put('/:id', userController.updateUser);
 
 /**
  * @swagger
- * /{id}:
+ * /usuarios/{id}:
  *   delete:
  *     summary: Remove um usuário
- *     tags:
- *       - Usuários
+ *     tags: [Usuários]
  *     parameters:
  *       - in: path
  *         name: id
@@ -118,4 +119,5 @@ router.put('/usuarios/:id', userController.updateUser);
 router.delete('/:id', userController.deleteUser);
 
 
+module
 module.exports = router;

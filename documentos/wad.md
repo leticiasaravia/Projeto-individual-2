@@ -115,18 +115,28 @@ CREATE TABLE tasks (
 ![DER](../assets/der.png)
 
 ### 3.1.1 BD e Models (Semana 5)
-*Descreva aqui os Models implementados no sistema web*
+A aplicação utiliza PostgreSQL, hospedado no Supabase. Os Models são representados pelas tabelas criadas no banco de dados. Como não foi utilizado um ORM, os Models são manipulados diretamente nos controllers com comandos SQL via pg.
+
+Exemplos:
+
+Model tasks: gerencia tarefas do usuário.
+
+Model alunos: representa os usuários cadastrados.
+
+Models auxiliares: status, prioridade, categorias.
 
 ### 3.2. Arquitetura (Semana 5)
 
-*Posicione aqui o diagrama de arquitetura da sua solução de aplicação web. Atualize sempre que necessário.*
+A arquitetura segue o padrão MVC (Model-View-Controller):
 
-**Instruções para criação do diagrama de arquitetura**  
-- **Model**: A camada que lida com a lógica de negócios e interage com o banco de dados.
-- **View**: A camada responsável pela interface de usuário.
-- **Controller**: A camada que recebe as requisições, processa as ações e atualiza o modelo e a visualização.
-  
-*Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
+Model: Camada que representa os dados (estruturas no banco, como tasks, alunos, etc.).
+
+View: Representada por interfaces como o calendário e os alertas modais.
+
+Controller: Onde a lógica de negócio é tratada. Recebe requisições, processa e interage com o banco.
+
+Fluxo:
+Usuário → View (interface) → Controller (função) → Model (SQL) → Controller → View (resposta)
 
 ### 3.3. Wireframes (Semana 03)
 
@@ -162,7 +172,27 @@ A notificação exibida no modal funciona como um lembrete visual, alertando a u
 
 ### 3.6. WebAPI e endpoints (Semana 05)
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
+A aplicação possui uma Web API RESTful com os seguintes endpoints:
+
+Usuários
+GET /api/usuarios — Lista todos os usuários
+
+GET /api/usuarios/:id — Busca um usuário por ID
+
+POST /api/usuarios — Cria um novo usuário
+
+PUT /api/usuarios/:id — Atualiza dados de um usuário
+
+DELETE /api/usuarios/:id — Remove um usuário
+
+Tarefas
+GET /api/tarefas — Lista todas as tarefas
+
+POST /api/tarefas — Cria uma nova tarefa
+
+PUT /api/tarefas/:id — Atualiza uma tarefa existente
+
+DELETE /api/tarefas/:id — Remove uma tarefa
 
 ### 3.7 Interface e Navegação (Semana 07)
 
