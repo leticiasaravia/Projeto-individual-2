@@ -1,204 +1,157 @@
-# Web Application Document - Projeto Individual - Módulo 2 - Inteli
+Documento de Aplicação Web – Projeto Individual – Módulo 2 – Inteli
+Título do Projeto
+Organizador Pessoal Universitário
 
-**_Os trechos em itálico servem apenas como guia para o preenchimento da seção. Por esse motivo, não devem fazer parte da documentação final._**
-
-## Nome do Projeto
-
-Personal Organizer
-
-#### Autor do projeto
-
+Responsável pelo Projeto
 Letícia Fernandes do Espírito Santo Saravia
 
-## Sumário
+Índice
+Apresentação
 
-1. [Introdução](#c1)  
-2. [Visão Geral da Aplicação Web](#c2)  
-3. [Projeto Técnico da Aplicação Web](#c3)  
-4. [Desenvolvimento da Aplicação Web](#c4)  
-5. [Referências](#c5)  
+Conceito Geral da Solução
 
-<br>
+Estrutura Técnica da Plataforma
 
-## <a name="c1"></a>1. Introdução (Semana 01)
+Construção da Plataforma Web
 
-Trata-se de um site desenvolvido com o objetivo de facilitar a organização do dia a dia universitário. A plataforma permite ao usuário adicionar e editar tarefas com uma interface intuitiva e acessível, pensada para tornar o usuário mais produtivo. Os dados são integrados pelo próprio estudante.
+Fontes de Pesquisa
 
----
+<a name="apresentacao"></a>1. Apresentação
+Este projeto propõe uma solução digital voltada à rotina acadêmica de estudantes universitários, com foco em gestão de tempo e produtividade. A aplicação permite ao usuário inserir, modificar e acompanhar suas atividades por meio de uma interface clara e acessível. A proposta é promover autonomia organizacional, com controle total por parte do estudante.
 
-## <a name="c2"></a>2. Visão Geral da Aplicação Web
+<a name="conceito"></a>2. Conceito Geral da Solução
+2.1. Perfil do Usuário
+<center> <img src="img/amandabatista.png" width="60%" alt="Perfil da Persona"> </center>
+2.2. Histórias do Usuário
+US01: Enquanto estudante de Direito, desejo receber alertas em diferentes momentos da tarefa (início, meio e fim), de modo que eu consiga distribuir melhor meu tempo e não esquecer das obrigações.
 
-### 2.1. Personas (Semana 01)
+US02: Como uma usuária focada em produtividade, gostaria de visualizar minhas tarefas distribuídas em um calendário prático e fácil de entender, para assim organizar minhas prioridades.
 
-<div align="center">
-    <strong style="font-size: 18px;"><sub>Persona</sub></strong><br>
-<img src="img/amandabatista.png" width="60%"
-    alt="Persona"><br>
+US03: Para lidar melhor com a definição do que fazer primeiro, quero que o sistema identifique automaticamente o grau de prioridade de cada tarefa, facilitando meu foco.
 
-### 2.2. User Stories (Semana 01)
+Análise da US03 com a metodologia INVEST:
 
+I - Independente: A funcionalidade pode ser desenvolvida de forma isolada.
 
-US01
-Como estudante de Direito, quero receber lembretes de início, meio e fim de uma atividade, para que eu consiga administrar melhor o meu tempo e não me perder nas tarefas.
+N - Negociável: O método de classificação pode ser alterado conforme novas demandas.
 
-US02
-Como usuária que busca produtividade, quero visualizar todas as minhas atividades em um calendário intuitivo, para que eu compreenda facilmente meus compromissos e prioridades.
+V - Valiosa: Ajuda o usuário a organizar melhor a agenda diária.
 
-US03 (com análise INVEST)
-Como usuária que tem dificuldade em definir prioridades, quero que as tarefas sejam automaticamente classificadas por nível de importância, para que eu saiba em qual atividade focar primeiro.
+E - Estimável: A funcionalidade possui complexidade gerenciável.
 
-Análise INVEST de US03:
+S - Small (Pequena): É possível quebrá-la em partes menores.
 
-Independente: Pode ser implementada de forma isolada sem depender de outra funcionalidade.
+T - Testável: Pode ser validada com testes de ordenação de tarefas.
 
-Negociável: A maneira de classificação manual pelo usuário pode ser adaptada conforme necessidade.
+<a name="estrutura"></a>3. Estrutura Técnica da Plataforma
+3.1. Banco de Dados
+O sistema utiliza banco de dados relacional PostgreSQL, hospedado no Supabase. Abaixo, a estrutura proposta:
 
-Valiosa: Ajuda Amanda a superar sua maior dor, que é não conseguir definir prioridades, aumentando sua produtividade.
-
-Estimável: A tarefa é de complexidade moderada, possível de estimar para planejamento de sprints.
-
-Pequena: Pode ser dividida em partes menores (ex: definição de critérios de prioridade, exibição no app, etc.).
-
-Testável: É possível testar verificando se as tarefas aparecem ordenadas conforme os critérios definidos.
----
-
----
-
-## <a name="c3"></a>3. Projeto da Aplicação Web
-
-### 3.1. Modelagem do banco de dados  (Semana 3)
-
-
-Modelo relacional
- ```sql
---  -- Tabela de Alunos
-CREATE TABLE alunos (
+sql
+Copiar
+Editar
+CREATE TABLE estudantes (
   id SERIAL PRIMARY KEY,
   nome VARCHAR NOT NULL,
   email VARCHAR NOT NULL UNIQUE,
   senha VARCHAR NOT NULL
 );
 
--- Tabela de Categorias
 CREATE TABLE categorias (
   id SERIAL PRIMARY KEY,
   nome VARCHAR NOT NULL
 );
 
--- Tabela de Prioridade
-CREATE TABLE prioridade (
+CREATE TABLE niveis_prioridade (
   id SERIAL PRIMARY KEY,
-  prioridade VARCHAR NOT NULL
+  descricao VARCHAR NOT NULL
 );
 
--- Tabela de Status
-CREATE TABLE status (
+CREATE TABLE status_tarefa (
   id SERIAL PRIMARY KEY,
-  status VARCHAR NOT NULL
+  estado VARCHAR NOT NULL
 );
 
--- Tabela de Tarefas
-CREATE TABLE tasks (
+CREATE TABLE tarefas (
   id SERIAL PRIMARY KEY,
-  aluno_id INT REFERENCES alunos(id) ON DELETE CASCADE,
-  categorias_id INT REFERENCES categorias(id) ON DELETE SET NULL,
+  estudante_id INT REFERENCES estudantes(id) ON DELETE CASCADE,
+  categoria_id INT REFERENCES categorias(id),
   titulo VARCHAR NOT NULL,
-  descricao VARCHAR,
-  data_inicio VARCHAR,
-  data_fim VARCHAR,
-  prioridade_id INT REFERENCES prioridade(id),
-  status_id INT REFERENCES status(id)
+  descricao TEXT,
+  inicio VARCHAR,
+  fim VARCHAR,
+  prioridade_id INT REFERENCES niveis_prioridade(id),
+  status_id INT REFERENCES status_tarefa(id)
 );
-```````
+3.1.1. Models
+A lógica de dados é gerenciada diretamente via SQL, sem ORM. As tabelas funcionam como modelos do sistema:
 
+tarefas: controle das atividades dos usuários
 
-![DER](../assets/der.png)
+estudantes: cadastro dos usuários
 
-### 3.1.1 BD e Models (Semana 5)
-A aplicação utiliza PostgreSQL, hospedado no Supabase. Os Models são representados pelas tabelas criadas no banco de dados. Como não foi utilizado um ORM, os Models são manipulados diretamente nos controllers com comandos SQL via pg.
+categorias, prioridade, status: tabelas auxiliares
 
-Exemplos:
+3.2. Arquitetura do Sistema
+Utiliza-se o padrão MVC (Model-View-Controller):
 
-Model tasks: gerencia tarefas do usuário.
+Model: Estrutura do banco de dados.
 
-Model alunos: representa os usuários cadastrados.
+View: Interface do usuário (calendário, notificações, formulários).
 
-Models auxiliares: status, prioridade, categorias.
+Controller: Manipula dados, aplica regras de negócio e responde à interface.
 
-### 3.2. Arquitetura (Semana 5)
+Fluxo da aplicação:
 
-A arquitetura segue o padrão MVC (Model-View-Controller):
+Usuário → Interface (View) → Controlador (Controller) → Banco (Model) → Controller → View
 
-Model: Camada que representa os dados (estruturas no banco, como tasks, alunos, etc.).
+3.3. Protótipos de Baixa Fidelidade
+Wireframe 1: Visão semanal + Detalhes da tarefa
+Calendário exibindo os dias da semana com painel lateral para preenchimento e visualização dos dados da tarefa. Elementos como nome, horários e prioridade são exibidos.
 
-View: Representada por interfaces como o calendário e os alertas modais.
+US02: Entrega uma visualização clara e eficiente das atividades da semana.
 
-Controller: Onde a lógica de negócio é tratada. Recebe requisições, processa e interage com o banco.
+US03: Campo de prioridade evidencia suporte à classificação automática.
 
-Fluxo:
-Usuário → View (interface) → Controller (função) → Model (SQL) → Controller → View (resposta)
+Wireframe 2: Alerta de conclusão
+Modal exibido ao final da execução de uma tarefa, com aviso de término e sugestão de nova atividade.
 
-### 3.3. Wireframes (Semana 03)
+US01: Implementação de lembretes visuais com temporizador.
 
-![WIREFRAME](wireframe.png)
+3.4. Guia de Estilo
+Inserir diretrizes de uso visual: cores, tipografia, espaçamentos, componentes etc.
 
-Wireframe 1 – Visualização semanal e detalhes da tarefa
-Este wireframe mostra uma visualização em formato de calendário semanal, acompanhado de um painel com os detalhes da tarefa selecionada. Nesse painel, o usuário pode visualizar ou preencher informações como: nome da tarefa, horários de início e fim, descrição e prioridade.
+3.5. Protótipo Final
+Imagens e link de acesso ao protótipo de alta fidelidade.
 
-Relacionamento com as User Stories:
+3.6. API REST
+A API da aplicação segue o padrão REST com os seguintes recursos:
 
-US02 - "Como usuária que busca produtividade, quero visualizar todas as minhas atividades em um calendário intuitivo..."
-O calendário semanal permite que a usuária veja de forma clara e organizada como suas atividades estão distribuídas ao longo dos dias. Isso facilita a compreensão dos compromissos, contribuindo para uma rotina mais estruturada e produtiva.
+Usuários:
 
-US03 - "Como usuária que tem dificuldade em definir prioridades, quero que as tarefas sejam automaticamente classificadas por nível de importância..."
-A presença do campo "Prioridade" no painel de tarefa mostra que há uma funcionalidade voltada à categorização das atividades por importância. Essa informação pode ser usada tanto para exibição quanto para ordenação automática das tarefas, o que atende diretamente à necessidade descrita na user story.
+GET /api/usuarios
 
-Wireframe 2 – Alerta de fim de tarefa
-Este wireframe apresenta a mesma estrutura do anterior, mas com um modal sobreposto no centro da tela. O modal exibe uma mensagem informando que o tempo da atividade foi concluído, além de sugerir que a usuária inicie uma nova tarefa.
+GET /api/usuarios/:id
 
-Relacionamento com a User Story:
+POST /api/usuarios
 
-US01 - "Como estudante de Direito, quero receber lembretes de início, meio e fim de uma atividade..."
-A notificação exibida no modal funciona como um lembrete visual, alertando a usuária de que o tempo para a conclusão da tarefa terminou. Isso demonstra que o sistema está acompanhando o tempo das atividades e notificando a usuária nos momentos apropriados, conforme proposto na user story.
+PUT /api/usuarios/:id
 
-### 3.4. Guia de estilos (Semana 05)
+DELETE /api/usuarios/:id
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
+Tarefas:
 
+GET /api/tarefas
 
-### 3.5. Protótipo de alta fidelidade (Semana 05)
+POST /api/tarefas
 
-*Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização).*
+PUT /api/tarefas/:id
 
-### 3.6. WebAPI e endpoints (Semana 05)
+DELETE /api/tarefas/:id
 
-A aplicação possui uma Web API RESTful com os seguintes endpoints:
+3.7. Frontend e Navegação
+Inserir prints e explicações sobre a interface desenvolvida e os principais pontos de navegação.
 
-Usuários
-GET /api/usuarios — Lista todos os usuários
-
-GET /api/usuarios/:id — Busca um usuário por ID
-
-POST /api/usuarios — Cria um novo usuário
-
-PUT /api/usuarios/:id — Atualiza dados de um usuário
-
-DELETE /api/usuarios/:id — Remove um usuário
-
-Tarefas
-GET /api/tarefas — Lista todas as tarefas
-
-POST /api/tarefas — Cria uma nova tarefa
-
-PUT /api/tarefas/:id — Atualiza uma tarefa existente
-
-DELETE /api/tarefas/:id — Remove uma tarefa
-
-### 3.7 Interface e Navegação (Semana 07)
-
-*Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
-
----
 
 ## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
 
@@ -217,3 +170,4 @@ DELETE /api/tarefas/:id — Remove uma tarefa
 ## <a name="c5"></a>5. Referências
 
 _Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
+

@@ -1,50 +1,23 @@
-//este arquivo chama-se server.js
-const express = require('express');
+const express = require("express");
+const bodyParser = require("body-parser"); // ou use express.json()
+const cors = require("cors");
+const rotas = require("./routes");
+
 const app = express();
-const PORT = 3000;
+const port = 3000; // você está testando na porta 3000
 
-// Swagger
-const swaggerUi = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
+const path = require("path");
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public"))); // se quiser usar CSS futuramente
 
-const swaggerSpec = swaggerJSDoc({
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'API Universitária',
-      version: '1.0.0',
-      description: 'Documentação da API de tarefas',
-    },
-  },
-  apis: ['./routes/*.js'], // caminhos para as anotações Swagger
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json()); // ou: app.use(express.json());
+
+// Usa as rotas definidas em routes.js
+app.use("/", rotas);
+
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// Middleware para processar JSON
-app.use(express.json());
-
-// Rotas
-const userRoutes = require('./routes/userRoutes');
-const tarefaRoutes = require('./routes/index');
-const frontRoutes = require('./routes/frontRoutes');
-
-app.use('/usuarios', userRoutes); // ex: GET /usuarios
-app.use('/tarefas', tarefaRoutes); // ex: GET /tarefas
-app.use('/', frontRoutes);
-
-// Banco de dados
-const pool = require('./config/database');
-
-
-pool.query('SELECT NOW()')
-  .then(() => console.log('🟢 Conectado ao banco de dados com sucesso!'))
-  .catch(err => console.error('🔴 Erro ao conectar ao banco de dados:', err));
-
-// Inicializa o servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Swagger em http://localhost:${PORT}/api-docs`);
-});
-
-

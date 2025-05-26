@@ -1,0 +1,205 @@
+<!-- Descrição: Este arquivo é o ponto de entrada do usuário, demonstrando as principais funçoes referente a tasks.-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tarefas</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 4px 8px;
+      margin: 0 2px;
+    }
+
+    #btn-cancel-edit {
+      background-color: #f44336;
+      color: white;
+      border: none;
+    }
+
+    #btn-cancel-edit:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Tarefas</h1>
+
+  <form id="form-task">
+    <input type="hidden" id="task-id" />
+    <input type="text" id="title" placeholder="Título da tarefa" required />
+    <br /><br />
+    <textarea id="description" placeholder="Descrição da tarefa" required></textarea>
+    <br /><br />
+    <button type="submit">Adicionar Tarefa</button>
+    <button type="button" id="btn-cancel-edit" style="display:none;">Cancelar</button>
+  </form>
+
+  <br />
+
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="task-body">
+      <!-- Conteúdo será adicionado com JavaScript -->
+    </tbody>
+  </table>
+
+  <script>
+    async function carregarTarefas() {
+      try {
+        const resposta = await fetch("/tarefas");
+        const json = await resposta.json();
+        const tasks = json.dados || [];
+
+        const tbody = document.getElementById("task-body");
+        tbody.innerHTML = "";
+
+        if (tasks.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='3'>Nenhuma tarefa encontrada.</td></tr>";
+          return;
+        }
+
+        tasks.forEach(task => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${task.title}</td>
+            <td>${task.description}</td>
+            <td>
+              <button data-id="${task.id}" class="btn-edit">Editar</button>
+              <button data-id="${task.id}" class="btn-delete">Excluir</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Erro ao carregar tarefas:", err);
+      }
+    }
+
+    const form = document.getElementById("form-task");
+    const inputId = document.getElementById("task-id");
+    const inputTitle = document.getElementById("title");
+    const inputDescription = document.getElementById("description");
+    const btnCancel = document.getElementById("btn-cancel-edit");
+    const btnSubmit = form.querySelector("button[type=submit]");
+
+    function iniciarEdicao(task) {
+      inputId.value = task.id;
+      inputTitle.value = task.title;
+      inputDescription.value = task.description;
+      btnSubmit.textContent = "Salvar Alterações";
+      btnCancel.style.display = "inline-block";
+    }
+
+    btnCancel.addEventListener("click", () => {
+      inputId.value = "";
+      form.reset();
+      btnSubmit.textContent = "Adicionar Tarefa";
+      btnCancel.style.display = "none";
+    });
+
+    document.getElementById("task-body").addEventListener("click", async event => {
+      const target = event.target;
+
+      if (target.classList.contains("btn-edit")) {
+        const id = target.getAttribute("data-id");
+
+        try {
+          const res = await fetch("/tarefas");
+          const json = await res.json();
+          const tasks = json.dados || [];
+          const task = tasks.find(t => t.id == id);
+          if (task) iniciarEdicao(task);
+        } catch (err) {
+          console.error(err);
+        }
+
+      } else if (target.classList.contains("btn-delete")) {
+        const id = target.getAttribute("data-id");
+
+        if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
+          try {
+            const res = await fetch(`/tarefas/${id}`, {
+              method: "DELETE",
+            });
+
+            if (!res.ok) throw new Error("Erro ao excluir tarefa");
+
+            carregarTarefas();
+
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        }
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const id = inputId.value.trim();
+      const title = inputTitle.value.trim();
+      const description = inputDescription.value.trim();
+
+      if (!title || !description) {
+        alert("Preencha título e descrição");
+        return;
+      }
+
+      try {
+        if (id) {
+          // Atualizar tarefa
+          const response = await fetch(`/tarefas/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, description }),
+          });
+          if (!response.ok) throw new Error("Erro ao atualizar tarefa");
+
+          inputId.value = "";
+          form.reset();
+          btnSubmit.textContent = "Adicionar Tarefa";
+          btnCancel.style.display = "none";
+
+        } else {
+          // Criar nova tarefa
+          const response = await fetch("/tarefas/nova", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, description }),
+          });
+          if (!response.ok) throw new Error("Erro ao adicionar tarefa");
+          form.reset();
+        }
+
+        carregarTarefas();
+
+      } catch (err) {
+        console.error(err);
+        alert(err.message);
+      }
+    });
+
+    // Carrega tarefas ao abrir a página
+    carregarTarefas();
+  </script>
+</body>
+</html>
