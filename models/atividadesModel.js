@@ -1,13 +1,13 @@
-// models/atividadesModel.js
+
 const db = require("../config/db");
 
-// Retorna todas as atividades (ordem decrescente)
+// Retorna atividade
 async function listarAtividades() {
   const resultado = await db.query("SELECT * FROM tasks ORDER BY id DESC");
   return resultado.rows;
 }
 
-// Cria uma nova atividade (apenas título e descrição)
+// Cria atividade
 async function novaAtividade(dados) {
   const { title, description } = dados;
   const query = `
@@ -20,7 +20,7 @@ async function novaAtividade(dados) {
   return resultado.rows[0];
 }
 
-// Atualiza atividade existente
+// Atualiza atividade
 async function atualizarAtividade(id, dados) {
   const { title, description } = dados;
   const query = `

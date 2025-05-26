@@ -1,15 +1,14 @@
-// OBS: alguns dados da tarefa entram como NULL nessa primeira versão, pois não há validação de entrada. Em uma versão futura, deve-se adicionar validações para garantir que os dados sejam válidos antes de inserir ou atualizar no banco de dados.
 
 // models/taskModel.js
 const db = require("../config/db");
 
-// Retorna todas as tarefas (ordem decrescente)
+// Retorna tarefa
 async function listarTarefas() {
   const resultado = await db.query("SELECT * FROM tasks ORDER BY id DESC");
   return resultado.rows;
 }
 
-// Cria uma nova tarefa (apenas título e descrição)
+// Cria tarefa 
 async function novaTarefa(dados) {
   const { title, description } = dados;
   const query = `
@@ -22,7 +21,7 @@ async function novaTarefa(dados) {
   return resultado.rows[0];
 }
 
-// Atualiza tarefa existente
+// Atualiza tarefa
 async function atualizarTarefa(id, dados) {
   const { title, description } = dados;
   const query = `

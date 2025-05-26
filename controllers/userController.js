@@ -1,4 +1,3 @@
-// A desenvolver (V2.0)
 
 const userModel = require("../models/userModel");
 

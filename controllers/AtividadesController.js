@@ -1,7 +1,7 @@
 // controllers/AtividadesController.js
 const atividadesRepo = require("../models/atividadesModel");
 
-// Adiciona uma atividade
+// Adiciona atividade
 exports.criar = async (req, res) => {
   try {
     const nova = await atividadesRepo.novaAtividade(req.body);
@@ -11,7 +11,7 @@ exports.criar = async (req, res) => {
   }
 };
 
-// Lista todas as atividades
+// Lista atividade
 exports.listar = async (req, res) => {
   try {
     const lista = await atividadesRepo.listarAtividades();
@@ -21,7 +21,7 @@ exports.listar = async (req, res) => {
   }
 };
 
-// Atualiza uma atividade
+// Atualiza atividade
 exports.atualizar = async (req, res) => {
   const { id } = req.params;
   try {
@@ -35,7 +35,7 @@ exports.atualizar = async (req, res) => {
   }
 };
 
-// Remove uma atividade
+// Remove atividade
 exports.remover = async (req, res) => {
   const { id } = req.params;
   try {

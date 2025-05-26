@@ -1,7 +1,7 @@
 // controllers/TarefaController.js
 const taskModel = require("../models/taskModel");
 
-// Criar uma nova tarefa
+// Cria tarefa
 exports.addTask = async (req, res) => {
   try {
     const task = await taskModel.createTask(req.body);
@@ -11,7 +11,7 @@ exports.addTask = async (req, res) => {
   }
 };
 
-// Listar todas as tarefas
+// Lista tarefa
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await taskModel.getAllTasks();
@@ -21,7 +21,7 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// Editar uma tarefa
+// Editar tarefa
 exports.editTask = async (req, res) => {
   const { id } = req.params;
   try {
@@ -35,7 +35,7 @@ exports.editTask = async (req, res) => {
   }
 };
 
-// Excluir uma tarefa
+// Exclui tarefa
 exports.deleteTask = async (req, res) => {
   const { id } = req.params;
   try {
