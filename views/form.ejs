@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= tarefa ? 'Editar Tarefa' : 'Nova Tarefa' %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><%= tarefa ? 'Editar Tarefa' : 'Nova Tarefa' %></h1>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <form id="tarefaForm" class="fade-in">
+            <div class="form-group">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="titulo" 
+                       name="titulo" 
+                       value="<%= tarefa ? tarefa.titulo : '' %>" 
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" 
+                          id="descricao" 
+                          name="descricao" 
+                          rows="3" 
+                          required><%= tarefa ? tarefa.descricao : '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="pendente" <%= tarefa && tarefa.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+                    <option value="em_andamento" <%= tarefa && tarefa.status === 'em_andamento' ? 'selected' : '' %>>Em Andamento</option>
+                    <option value="concluida" <%= tarefa && tarefa.status === 'concluida' ? 'selected' : '' %>>Concluída</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('tarefaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                titulo: document.getElementById('titulo').value,
+                descricao: document.getElementById('descricao').value,
+                status: document.getElementById('status').value
+            };
+
+            const isEdit = <%= !!tarefa %>;
+            const url = isEdit ? `/api/tarefas/<%= tarefa ? tarefa.id : '' %>` : '/api/tarefas';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Erro ao salvar tarefa');
+                }
+
+                window.location.href = '/';
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    </script>
+</body>
+</html> 

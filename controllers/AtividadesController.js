@@ -1,50 +1,84 @@
 // controllers/AtividadesController.js
-const atividadesRepo = require("../models/atividadesModel");
+const atividadesModel = require("../models/atividades");
 
-// Adiciona atividade
-exports.criar = async (req, res) => {
-  try {
-    const nova = await atividadesRepo.novaAtividade(req.body);
-    res.status(201).json({ sucesso: true, dados: nova });
-  } catch (e) {
-    res.status(500).json({ sucesso: false, erro: e.message });
-  }
-};
-
-// Lista atividade
+// Lista todas as tarefas
 exports.listar = async (req, res) => {
   try {
-    const lista = await atividadesRepo.listarAtividades();
-    res.status(200).json({ sucesso: true, dados: lista });
-  } catch (e) {
-    res.status(500).json({ sucesso: false, erro: e.message });
+    const tarefas = await atividadesModel.getAll();
+    res.json(tarefas);
+  } catch (error) {
+    console.error('Erro ao listar tarefas:', error);
+    res.status(500).json({ error: 'Erro ao listar tarefas' });
   }
 };
 
-// Atualiza atividade
+// Busca uma tarefa específica
+exports.buscarPorId = async (req, res) => {
+  try {
+    const tarefa = await atividadesModel.getById(req.params.id);
+    if (!tarefa) {
+      return res.status(404).json({ error: 'Tarefa não encontrada' });
+    }
+    res.json(tarefa);
+  } catch (error) {
+    console.error('Erro ao buscar tarefa:', error);
+    res.status(500).json({ error: 'Erro ao buscar tarefa' });
+  }
+};
+
+// Cria uma nova tarefa
+exports.criar = async (req, res) => {
+  try {
+    const tarefa = await atividadesModel.create(req.body);
+    res.status(201).json(tarefa);
+  } catch (error) {
+    console.error('Erro ao criar tarefa:', error);
+    res.status(500).json({ error: 'Erro ao criar tarefa' });
+  }
+};
+
+// Atualiza uma tarefa
 exports.atualizar = async (req, res) => {
-  const { id } = req.params;
   try {
-    const alterada = await atividadesRepo.atualizarAtividade(id, req.body);
-    if (!alterada) {
-      return res.status(404).json({ sucesso: false, mensagem: "Não encontrada" });
+    const tarefa = await atividadesModel.update(req.params.id, req.body);
+    if (!tarefa) {
+      return res.status(404).json({ error: 'Tarefa não encontrada' });
     }
-    res.status(200).json({ sucesso: true, dados: alterada });
-  } catch (e) {
-    res.status(500).json({ sucesso: false, erro: e.message });
+    res.json(tarefa);
+  } catch (error) {
+    console.error('Erro ao atualizar tarefa:', error);
+    res.status(500).json({ error: 'Erro ao atualizar tarefa' });
   }
 };
 
-// Remove atividade
+// Remove uma tarefa
 exports.remover = async (req, res) => {
-  const { id } = req.params;
   try {
-    const removida = await atividadesRepo.removerAtividade(id);
-    if (!removida) {
-      return res.status(404).json({ sucesso: false, mensagem: "Não encontrada" });
+    const tarefa = await atividadesModel.delete(req.params.id);
+    if (!tarefa) {
+      return res.status(404).json({ error: 'Tarefa não encontrada' });
     }
-    res.status(200).json({ sucesso: true, mensagem: "Removida com sucesso" });
-  } catch (e) {
-    res.status(500).json({ sucesso: false, erro: e.message });
+    res.json({ message: 'Tarefa removida com sucesso' });
+  } catch (error) {
+    console.error('Erro ao remover tarefa:', error);
+    res.status(500).json({ error: 'Erro ao remover tarefa' });
+  }
+};
+
+exports.formNova = async (req, res) => {
+  res.render('form', { tarefa: null });
+};
+
+// Renderiza o formulário de edição
+exports.formEditar = async (req, res) => {
+  try {
+    const tarefa = await atividadesModel.getById(req.params.id);
+    if (!tarefa) {
+      return res.redirect('/');
+    }
+    res.render('form', { tarefa });
+  } catch (error) {
+    console.error('Erro ao buscar tarefa:', error);
+    res.redirect('/');
   }
 };

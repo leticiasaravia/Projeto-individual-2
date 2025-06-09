@@ -1,16 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const atividadesActions = require("../controllers/AtividadesController");
+const atividadesController = require("../controllers/AtividadesController");
 
-// Página inicial
-router.get("/", (req, res) => {
-  res.render("tasks");
-});
+// Rotas para renderização das views
+router.get("/", (req, res) => res.render("index"));
+router.get("/nova-tarefa", (req, res) => res.render("form", { tarefa: null }));
+router.get("/editar-tarefa/:id", atividadesController.formEditar);
 
-// Rotas de atividades com nomes diferentes
-router.get("/tarefas", atividadesActions.listar);
-router.post("/tarefas/nova", atividadesActions.criar);
-router.put("/tarefas/:id", atividadesActions.atualizar);
-router.delete("/tarefas/:id", atividadesActions.remover);
+// Rotas da API
+router.get("/api/tarefas", atividadesController.listar);
+router.post("/api/tarefas", atividadesController.criar);
+router.get("/api/tarefas/:id", atividadesController.buscarPorId);
+router.put("/api/tarefas/:id", atividadesController.atualizar);
+router.delete("/api/tarefas/:id", atividadesController.remover);
 
 module.exports = router;

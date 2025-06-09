@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tarefas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lista de Tarefas</h1>
+            <a href="/nova-tarefa" class="btn btn-primary">Nova Tarefa</a>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading">Carregando tarefas...</div>
+        <div id="tarefas"></div>
+    </div>
+
+    <template id="task-template">
+        <div class="task-card fade-in">
+            <div class="task-header">
+                <h2 class="task-title"></h2>
+                <span class="task-status"></span>
+            </div>
+            <p class="task-description"></p>
+            <div class="task-actions">
+                <a href="#" class="btn btn-warning btn-edit">Editar</a>
+                <button class="btn btn-danger btn-delete">Excluir</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Função para mostrar erro
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Função para criar um elemento de tarefa
+        function createTaskElement(tarefa) {
+            const template = document.getElementById('task-template');
+            const taskElement = template.content.cloneNode(true);
+            
+            taskElement.querySelector('.task-title').textContent = tarefa.titulo;
+            taskElement.querySelector('.task-description').textContent = tarefa.descricao;
+            
+            const statusElement = taskElement.querySelector('.task-status');
+            statusElement.textContent = tarefa.status.replace('_', ' ');
+            statusElement.classList.add(`status-${tarefa.status}`);
+            
+            const editBtn = taskElement.querySelector('.btn-edit');
+            editBtn.href = `/editar-tarefa/${tarefa.id}`;
+            
+            const deleteBtn = taskElement.querySelector('.btn-delete');
+            deleteBtn.onclick = () => deletarTarefa(tarefa.id);
+            
+            const card = taskElement.querySelector('.task-card');
+            card.id = `task-${tarefa.id}`;
+            
+            return taskElement;
+        }
+
+        // Função para carregar tarefas
+        async function carregarTarefas() {
+            try {
+                const response = await fetch('/api/tarefas');
+                if (!response.ok) throw new Error('Erro ao carregar tarefas');
+                
+                const tarefas = await response.json();
+                const container = document.getElementById('tarefas');
+                container.innerHTML = '';
+                
+                tarefas.forEach(tarefa => {
+                    container.appendChild(createTaskElement(tarefa));
+                });
+            } catch (error) {
+                showError('Erro ao carregar tarefas: ' + error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        // Função para deletar tarefa
+        async function deletarTarefa(id) {
+            if (!confirm('Tem certeza que deseja excluir esta tarefa?')) return;
+            
+            try {
+                const response = await fetch(`/api/tarefas/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error('Erro ao deletar tarefa');
+                
+                const taskElement = document.getElementById(`task-${id}`);
+                taskElement.style.animation = 'fadeIn 0.3s ease-out reverse';
+                setTimeout(() => taskElement.remove(), 300);
+            } catch (error) {
+                showError('Erro ao deletar tarefa: ' + error.message);
+            }
+        }
+
+        // Carregar tarefas quando a página carregar
+        document.addEventListener('DOMContentLoaded', carregarTarefas);
+    </script>
+</body>
+</html> 

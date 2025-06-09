@@ -1,5 +1,5 @@
 {
-  "name": "tasklygerenciadortarefas",
+  "name": "personalorganizer",
   "version": "1.0.0",
   "description": "",
   "main": "jest.config.js",
@@ -10,23 +10,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GigicaNeves/tasklyGerenciadorTarefas.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GigicaNeves/tasklyGerenciadorTarefas/issues"
-  },
-  "homepage": "https://github.com/GigicaNeves/tasklyGerenciadorTarefas#readme",
-  "dependencies": {
+
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "pg": "^8.15.6"
+    "pg": "^8.16.0"
   }
-}
+
