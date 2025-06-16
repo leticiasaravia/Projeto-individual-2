@@ -1,15 +1,15 @@
 
-// models/taskModel.js
+
 const db = require("../config/db");
 
-// Retorna tarefa
-async function listarTarefas() {
+// Retorna
+async function listarAtv() {
   const resultado = await db.query("SELECT * FROM tasks ORDER BY id DESC");
   return resultado.rows;
 }
 
-// Cria tarefa 
-async function novaTarefa(dados) {
+// Cria 
+async function novaAtv(dados) {
   const { title, description } = dados;
   const query = `
     INSERT INTO tasks (title, description)
@@ -21,8 +21,8 @@ async function novaTarefa(dados) {
   return resultado.rows[0];
 }
 
-// Atualiza tarefa
-async function atualizarTarefa(id, dados) {
+// Atualiza
+async function atualizarAtv(id, dados) {
   const { title, description } = dados;
   const query = `
     UPDATE tasks
@@ -35,15 +35,15 @@ async function atualizarTarefa(id, dados) {
   return resultado.rows[0];
 }
 
-// Remove tarefa
-async function removerTarefa(id) {
+// Remove
+async function removerAtv(id) {
   const resultado = await db.query("DELETE FROM tasks WHERE id = $1 RETURNING *", [id]);
   return resultado.rows[0];
 }
 
 module.exports = {
-  listarTarefas,
-  novaTarefa,
-  atualizarTarefa,
-  removerTarefa,
+  listarAtv,
+  novaAtv,
+  atualizarAtv,
+  removerAtv,
 };

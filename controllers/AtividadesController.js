@@ -1,5 +1,5 @@
 // controllers/AtividadesController.js
-const atividadesModel = require("../models/atividades");
+const atividadesModel = require("../models/atvdiaSemanaModel");
 
 // Lista todas as tarefas
 exports.listar = async (req, res) => {
