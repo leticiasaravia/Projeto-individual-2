@@ -195,9 +195,27 @@ PUT /api/tarefas/:id — Atualiza uma tarefa existente
 DELETE /api/tarefas/:id — Remove uma tarefa
 
 ### 3.7 Interface e Navegação (Semana 07)
+Desenvolvimento do Front-End do Sistema Web
+Durante o desenvolvimento do front-end do sistema web, foi implementada uma interface limpa, responsiva e funcional utilizando HTML, CSS e integração com JavaScript para dinamismo. O código CSS apresentado define o estilo visual do sistema com base em variáveis customizadas (CSS Custom Properties), facilitando a manutenção e a consistência de cores e temas ao longo de toda a aplicação.
 
-*Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+A interface foi estruturada com foco em usabilidade, legibilidade e clareza. Foram desenvolvidos componentes reutilizáveis como cards de tarefas (.task-card), botões interativos (.btn, .btn-primary, .btn-danger, etc.) e formulários de entrada com feedback visual ao usuário. As tarefas são exibidas em cartões com título, descrição, status e ações possíveis. Cada status possui uma cor distinta, permitindo rápida identificação visual (ex: pendente em amarelo, em andamento em azul e concluída em verde).
 
+O layout foi projetado com design responsivo, adaptando-se a diferentes tamanhos de tela. Em telas menores, como celulares, os elementos são reorganizados com flex-wrap, media queries e alinhamento vertical para garantir acessibilidade e boa experiência de uso. A classe .container centraliza o conteúdo e limita a largura máxima, enquanto a .header organiza os elementos do topo com espaçamento adequado.
+
+Além disso, foram implementadas animações sutis como .fade-in para suavizar a entrada de elementos na tela e indicar dinamismo. Mensagens de erro e carregamento também foram estilizadas para guiar o usuário em situações de espera ou falhas.
+
+Componentes entregues:
+Cards de tarefas com status dinâmico (pendente, em andamento, concluída)
+
+Botões interativos para ações como editar, excluir ou concluir tarefa
+
+Formulários com campos estilizados e feedback de foco
+
+Cores temáticas para ações (primária, sucesso, alerta, erro)
+
+Estilização de mensagens de erro e carregamento
+
+Sombreamento, espaçamento e bordas arredondadas para melhorar a estética visual
 ---
 
 ## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
