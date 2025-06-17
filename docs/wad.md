@@ -272,25 +272,113 @@ _Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelid
 
 ### 3.6. WebAPI e endpoints (Semana 05)
 
-_Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema._
+A Web API do Personal Organizer atua como ponte entre a interface do usuário e o backend, permitindo a troca estruturada de dados via HTTP. Os endpoints são rotas específicas que executam operações como criação, leitura, atualização e exclusão de tarefas.
+
+Endpoints principais:
+GET /tasks
+Retorna todas as tarefas cadastradas.
+Resposta esperada:
+
+json
+Copiar
+Editar
+[
+  { "id": 1, "title": "Beber água", "description": "Tomar 2 litros ao longo do dia" },
+  { "id": 2, "title": "Exercício físico", "description": "Caminhar por 30 minutos" }
+]
+DELETE /tasks/:id
+Remove uma tarefa específica com base no ID.
+Respostas possíveis:
+
+200 OK – Tarefa removida
+
+404 Not Found – Tarefa inexistente
+
+500 Internal Server Error
+
+PUT /tasks/:id
+Atualiza uma tarefa.
+Requisição esperada:
+
+json
+Copiar
+Editar
+{ "title": "Novo título", "description": "Nova descrição" }
+POST /tasks/add
+Cria uma nova tarefa.
+Requisição esperada:
+
+json
+Copiar
+Editar
+{ "title": "Ler um livro", "description": "Ler 10 páginas antes de dormir" }
+Esses endpoints são acessados pela interface utilizando fetch(), o que garante a comunicação assíncrona entre cliente e servidor.
 
 ### 3.7 Interface e Navegação (Semana 07)
+No desenvolvimento do sistema Personal Organizer, a interface foi planejada para oferecer uma experiência visual limpa, objetiva e funcional. A proposta da navegação é orientar o usuário de forma intuitiva por meio de elementos bem organizados e consistentes ao longo do sistema, possibilitando o controle de tarefas com foco e simplicidade.
 
-_Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar._
+Do ponto de vista estrutural, o sistema se apoia em dois componentes principais de navegação:
 
----
+Barra de navegação superior (navbar): posicionada no topo da tela, permite alternar entre as páginas principais do sistema. Seu visual segue a identidade do projeto, com cores predominantemente azul-escuro, preto e branco, reforçando a neutralidade e foco.
+
+Rodapé (footer): presente ao fim de cada página, possui função puramente estética neste momento, atuando como delimitador visual.
+
+Estrutura Visual
+O layout do sistema é composto por duas páginas centrais:
+
+Página inicial (Home): apresenta uma visão geral das tarefas do usuário, com destaque para a funcionalidade de leitura rápida. É nela que o usuário entra em contato pela primeira vez com o sistema e entende seu propósito.
+
+Página de gerenciamento: permite ações como cadastrar, atualizar ou excluir tarefas. Nessa área, a interface é composta por cards com ícones funcionais (editar e excluir), otimizando a interação com os dados de forma responsiva.
+
+Para facilitar as operações, utiliza-se um modal flutuante, que aparece no centro da tela para adição ou edição de tarefas. Essa escolha de design mantém o foco do usuário na ação que está realizando, sem desorientá-lo ou redirecioná-lo para outras páginas.
+
+Elementos Gráficos e Tipografia
+Toda a estética do Personal Organizer é baseada em uma paleta que combina tons de azul com branco e preto, criando uma sensação de organização e concentração. Os elementos visuais apresentam cantos arredondados e espaçamento balanceado, contribuindo para a leveza visual e ergonomia da navegação.
+
+As fontes utilizadas são do estilo "technical", que favorece a legibilidade sem comprometer a identidade visual.
+
+Acessibilidade e Responsividade
+O sistema incorpora uma API de acessibilidade visual, que fornece controle de contraste, tamanho da fonte e leitura facilitada para usuários com diferentes necessidades. Esse recurso amplia a inclusão digital e torna o Personal Organizer acessível a públicos diversos.
+
 
 ## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
 
-### 4.1 Demonstração do Sistema Web (Semana 8)
+### 4. Desenvolvimento da Aplicação Web
+### 4.1 Visão Geral do Sistema
+O sistema desenvolvido é um CRUD funcional para gerenciamento de tarefas, programado com foco na prática dos conteúdos vistos no segundo módulo de desenvolvimento web.
 
-_VIDEO: Insira o link do vídeo demonstrativo nesta seção_
-_Descreva e ilustre aqui o desenvolvimento do sistema web completo, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar._
+Tecnologias principais:
 
-### 4.2 Conclusões e Trabalhos Futuros (Semana 8)
+Express (Node.js): Gerencia as rotas e lógica do servidor.
 
-_Indique pontos fortes e pontos a melhorar de maneira geral._
-_Relacione também quaisquer outras ideias que você tenha para melhorias futuras._
+MVC: A arquitetura do projeto segue o padrão Model-View-Controller, garantindo separação entre dados, visualização e lógica.
+
+Supabase: Banco de dados PostgreSQL com recursos integrados de autenticação e API.
+
+Fetch API: Comunicação assíncrona entre front-end e back-end.
+
+Durante o processo de desenvolvimento, o sistema foi evoluindo com base em testes, feedbacks e revisão de código. Mesmo com limitações de tempo, buscou-se manter um padrão limpo e sustentável, prevendo possíveis expansões na estrutura futura (versão 2.0).
+
+A estrutura oferece duas páginas principais:
+
+Home: para visualizar as tarefas registradas.
+
+Painel de Gerenciamento: onde o usuário pode incluir novas tarefas, fazer alterações ou excluí-las.
+
+As imagens abaixo ilustram as funcionalidades implementadas:
+
+Adição de tarefas
+
+Edição de tarefas existentes
+
+Exclusão de tarefas
+
+### 4.2 Considerações Finais e Próximas Etapas
+A experiência de desenvolver essa aplicação foi bastante significativa. Permitindo aplicar, de forma prática, os conceitos de estruturação back-end, renderização dinâmica e manipulação de dados em uma interface visual completa.
+
+Apesar de a complexidade ter sido maior do que o esperado inicialmente, o projeto cumpriu seu papel formativo e servirá como base para futuras melhorias. A intenção para versões futuras é aprimorar o design responsivo, expandir funcionalidades e integrar autenticação de usuários.
+
+
 
 ## <a name="c5"></a>5. Referências
 
